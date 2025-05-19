@@ -1,0 +1,23 @@
+﻿# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.VC.db
+
+# Archivos de compilación
+[Dd]ebug/
+[Rr]elease/
+x64/
+*.pdb
+*.ilk
+
+# Configuración local
+appsettings.json
+appsettings.*.json
+
+# Base de datos local
+*.mdf
+*.ldf
