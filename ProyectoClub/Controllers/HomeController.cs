@@ -18,6 +18,12 @@ namespace ProyectoClub.Controllers
             return View();
         }
 
+        public IActionResult Dashboard()
+        {
+            _logger.LogInformation("Usuario entró al Dashboard");
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

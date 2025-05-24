@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProyectoClub.Data;
 using ProyectoClub.Models;
+using ProyectoClub.Utils;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ProyectoClubDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ProyectoClubDbContext>();
 
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -45,8 +48,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-    //options.LoginPath = "/Identity/Account/Login";
-    //options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
 
@@ -54,9 +57,27 @@ builder.Services.AddIdentity<Usuario,IdentityRole>()
     .AddEntityFrameworkStores<ProyectoClubDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
+
+// ----- INICIO DEL SEEDER DE ROLES Y USUARIO ADMINISTRADOR -----
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    try
+    {
+        var userManager = serviceProvider.GetRequiredService<UserManager<Usuario>>();
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        await SeedData.Initialize(serviceProvider, userManager, roleManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
+// ----- FIN DEL SEEDER DE ROLES Y USUARIO ADMINISTRADOR -----
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -69,6 +90,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -78,5 +101,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+app.MapRazorPages();
 
 app.Run();
