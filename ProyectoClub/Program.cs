@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ProyectoClub.Data;
 using ProyectoClub.Models;
+using ProyectoClub.Services.Email;
 using ProyectoClub.Utils;
 using System;
 
@@ -13,12 +15,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ProyectoClubDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ProyectoClubDbContext>();
-
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -56,6 +52,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddIdentity<Usuario,IdentityRole>()
     .AddEntityFrameworkStores<ProyectoClubDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddTransient<IEmailSender, DummyEmailSender>();
 
 var app = builder.Build();
 
