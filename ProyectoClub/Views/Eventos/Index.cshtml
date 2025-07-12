@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ProyectoClub.Models.Evento>
+
+@{
+    ViewData["Title"] = "Eventos";
+}
+
+<h1>Eventos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Sede</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Descripcion</td>
+                <td>@item.FechaInicio.ToString("g")</td>
+                <td>@item.FechaFin.ToString("g")</td>
+                <td>@item.Sede?.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ProyectoClub.Data;
@@ -16,6 +16,11 @@ builder.Services.AddDbContext<ProyectoClubDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddRazorPages();
+
+
+builder.Services.AddIdentity<Usuario, IdentityRole>()
+    .AddEntityFrameworkStores<ProyectoClubDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -41,17 +46,14 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
+    options.LoginPath = "/Identity/Account/Login";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
-
-builder.Services.AddIdentity<Usuario,IdentityRole>()
-    .AddEntityFrameworkStores<ProyectoClubDbContext>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddTransient<IEmailSender, DummyEmailSender>();
 
@@ -86,6 +88,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
@@ -93,12 +96,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
-app.MapRazorPages();
+app.Use(async (context, next) =>
+{
+    Console.WriteLine($"Request: {context.Request.Path}");
+    await next();
+});
 
 app.Run();

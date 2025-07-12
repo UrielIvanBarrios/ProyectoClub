@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace ProyectoClub.Models
@@ -19,7 +22,15 @@ namespace ProyectoClub.Models
         public DateTime FechaFin { get; set; }
         [Required]
         public int SedeId { get; set; }
+        
+        [ValidateNever]
         public Sede Sede { get; set; }
+
+        [ValidateNever]
+        public string UsuarioId { get; set; }
+
+        [ValidateNever]
+        public Usuario Usuario { get; set; }
 
     }
 }

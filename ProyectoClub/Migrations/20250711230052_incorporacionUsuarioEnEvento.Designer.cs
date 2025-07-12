@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoClub.Data;
 
@@ -11,9 +12,11 @@ using ProyectoClub.Data;
 namespace ProyectoClub.Migrations
 {
     [DbContext(typeof(ProyectoClubDbContext))]
-    partial class ProyectoClubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250711230052_incorporacionUsuarioEnEvento")]
+    partial class incorporacionUsuarioEnEvento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
