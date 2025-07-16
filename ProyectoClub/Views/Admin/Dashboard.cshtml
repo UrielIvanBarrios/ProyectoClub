@@ -5,20 +5,59 @@
 <div class="container mt-5">
     <h2 class="mb-4">Panel de Administración</h2>
     <div class="row">
-        <div class="col-md-4 mb-3">
-            <a asp-controller="Actividades" asp-action="Index" class="btn btn-primary w-100">Actividades</a>
+        <!-- Actividades -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-primary h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Actividades</h5>
+                    <p class="card-text">Gestiona las actividades disponibles en el club.</p>
+                    <a asp-controller="Actividades" asp-action="Index" class="btn btn-primary stretched-link">Administrar</a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <a asp-controller="Eventos" asp-action="Index" class="btn btn-info w-100">Eventos</a>
+
+        <!-- Eventos -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-info h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Eventos</h5>
+                    <p class="card-text">Administra los eventos programados.</p>
+                    <a asp-controller="Eventos" asp-action="Index" class="btn btn-info stretched-link">Administrar</a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <a asp-controller="Sedes" asp-action="Index" class="btn btn-success w-100">Sedes</a>
+
+        <!-- Sedes -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-success h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Sedes</h5>
+                    <p class="card-text">Gestiona las sedes del club.</p>
+                    <a asp-controller="Sedes" asp-action="Index" class="btn btn-success stretched-link">Administrar</a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <a asp-controller="SedesActividades" asp-action="Index" class="btn btn-info w-100">Asociar Actividades a Sedes</a>
+
+        <!-- Asociar Actividades a Sedes -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-info h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Asociar Actividades</h5>
+                    <p class="card-text">Gestiona qué actividades están disponibles en cada sede.</p>
+                    <a asp-controller="SedesActividades" asp-action="Index" class="btn btn-info stretched-link">Administrar</a>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <a asp-controller="Inscripciones" asp-action="Index" class="btn btn-success w-100">Visualizar Inscripciones</a>
+
+        <!-- Visualizar Inscripciones -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-success h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Inscripciones</h5>
+                    <p class="card-text">Consulta las inscripciones a actividades y eventos.</p>
+                    <a asp-controller="Inscripciones" asp-action="Index" class="btn btn-success stretched-link">Visualizar</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

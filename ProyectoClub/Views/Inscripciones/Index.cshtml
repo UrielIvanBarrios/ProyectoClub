@@ -2,16 +2,56 @@
     ViewData["Title"] = "Inscripciones";
 }
 
-<h1>Inscripciones</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Inscripciones</h1>
 
-<p>
-    <a asp-action="IndexActividad" class="btn btn-primary">Ver Inscripciones a Actividades</a>
-    <a asp-action="IndexEvento" class="btn btn-primary">Ver Inscripciones a Eventos</a>
-</p>
+    <div class="row">
+        <!-- Card Inscripciones a Actividades -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-primary h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">
+                        <i class="fas fa-dumbbell me-2"></i>Actividades
+                    </h5>
+                    <p class="card-text">Consulta y gestiona las inscripciones a actividades deportivas</p>
+                    <a asp-action="IndexActividad" class="btn btn-primary stretched-link">Ver Inscripciones</a>
+                </div>
+            </div>
+        </div>
 
-@if (User.IsInRole("Admin"))
-{
-    <div class="d-flex mb-3">
-        <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-secondary">Volver al Dashboard</a>
+        <!-- Card Inscripciones a Eventos -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-primary h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">
+                        <i class="fas fa-calendar-alt me-2"></i>Eventos
+                    </h5>
+                    <p class="card-text">Consulta y gestiona las inscripciones a eventos especiales</p>
+                    <a asp-action="IndexEvento" class="btn btn-primary stretched-link">Ver Inscripciones</a>
+                </div>
+            </div>
+        </div>
     </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mt-3">
+            <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Volver al Dashboard
+            </a>
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+    </style>
 }
