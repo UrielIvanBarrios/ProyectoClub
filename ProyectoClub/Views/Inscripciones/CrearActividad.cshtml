@@ -1,0 +1,76 @@
+﻿@model ProyectoClub.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Inscribirse a una Actividad";
+}
+
+<h2>@ViewData["Title"]</h2>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <strong>Se encontraron errores en el formulario:</strong>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+<form asp-action="CrearActividad" method="post">
+    <div class="form-group">
+        <label asp-for="SedeId" class="control-label"></label>
+        <select asp-for="SedeId" class="form-control" asp-items="ViewBag.SedeId" id="SedeId">
+            <option value="" disabled selected>Seleccione una sede primero</option>
+        </select>
+        <span asp-validation-for="SedeId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ActividadId" class="control-label"></label>
+        <select asp-for="ActividadId" class="form-control" asp-items="ViewBag.ActividadId" id="ActividadId">
+            <option value="" disabled selected></option>
+        </select>
+        <span asp-validation-for="ActividadId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Inscribirse</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById("SedeId").addEventListener("change", function () {
+            var sedeId = this.value;
+            var actividadSelect = document.getElementById("ActividadId");
+
+            // Limpia las opciones actuales
+            actividadSelect.innerHTML = "";
+
+            if (!sedeId) return;
+
+            fetch(`/Inscripciones/ObtenerActividadesPorSede?sedeId=${sedeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        actividadSelect.innerHTML = '<option value="" disabled>No hay actividades disponibles</option>';
+                        return;
+                    }
+
+                    data.forEach(a => {
+                        var option = document.createElement("option");
+                        option.value = a.id;
+                        option.text = a.nombre;
+                        actividadSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error al obtener actividades:", error);
+                    actividadSelect.innerHTML = '<option value="" disabled>Error al cargar actividades</option>';
+                });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

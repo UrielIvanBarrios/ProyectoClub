@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ProyectoClub.Models.Inscripcion>
+
+@{
+    ViewData["Title"] = "Inscripciones";
+}
+
+<h1>Inscripciones</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Actividad</th>
+            <th>Evento</th>
+            <th>Sede</th>
+            <th>Fecha de inscripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inscripcion in Model)
+        {
+            <tr>
+                <td>@inscripcion.Usuario?.UserName</td>
+                <td>@inscripcion.Actividad?.Nombre</td>
+                <td>@inscripcion.Evento?.Nombre</td>
+                <td>@inscripcion.Sede?.Nombre</td>
+                <td>@inscripcion.FechaInscripcion.ToString("g")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@inscripcion.Id" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@inscripcion.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Nueva inscripción</a>

@@ -1,0 +1,24 @@
+﻿@model ProyectoClub.Models.Evento
+
+@{
+    ViewData["Title"] = "Eliminar Evento";
+}
+
+
+<h1>Eliminar Evento</h1>
+
+<h3>¿Estás seguro de que querés eliminar este evento?</h3>
+
+<div>
+    <h4>@Model.Nombre</h4>
+    <p>@Model.Descripcion</p>
+    <p>Desde: @Model.FechaInicio</p>
+    <p>Hasta: @Model.FechaFin</p>
+    <p>Sede: @Model.Sede?.Nombre</p>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ProyectoClub.Models.SedeActividad>
+
+@{
+    ViewData["Title"] = "Asociaciones Sede - Actividad";
+}
+
+<h2>Asociaciones Sede - Actividad</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sede</th>
+            <th>Actividad</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Sede.Nombre</td>
+                <td>@item.Actividad.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Nueva Asociación</a>

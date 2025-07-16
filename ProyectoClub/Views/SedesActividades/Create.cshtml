@@ -1,0 +1,26 @@
+﻿@model ProyectoClub.Models.SedeActividad
+
+@{
+    ViewData["Title"] = "Asociar Actividad a Sede";
+}
+
+<h2>Asociar Actividad a Sede</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="SedeId" class="control-label">Sede</label>
+        <select asp-for="SedeId" class="form-control" asp-items="ViewBag.SedeId"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ActividadId" class="control-label">Actividad</label>
+        <select asp-for="ActividadId" class="form-control" asp-items="ViewBag.ActividadId"></select>
+    </div>
+
+    <div class="text-danger">
+        @Html.ValidationSummary()
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Asociar</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Volver</a>
+</form>
