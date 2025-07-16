@@ -21,39 +21,16 @@ namespace ProyectoClub.Controllers
             _context = context;
         }
 
-        // GET: Sedes
         public async Task<IActionResult> Index()
         {
             return View(await _context.Sedes.ToListAsync());
         }
 
-        // GET: Sedes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var sede = await _context.Sedes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sede == null)
-            {
-                return NotFound();
-            }
-
-            return View(sede);
-        }
-
-        // GET: Sedes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sedes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Direccion,capacidad,Habilitada")] Sede sede)
@@ -67,7 +44,6 @@ namespace ProyectoClub.Controllers
             return View(sede);
         }
 
-        // GET: Sedes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,9 +59,6 @@ namespace ProyectoClub.Controllers
             return View(sede);
         }
 
-        // POST: Sedes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Direccion,capacidad,Habilitada")] Sede sede)
@@ -118,7 +91,6 @@ namespace ProyectoClub.Controllers
             return View(sede);
         }
 
-        // GET: Sedes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,7 +108,6 @@ namespace ProyectoClub.Controllers
             return View(sede);
         }
 
-        // POST: Sedes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

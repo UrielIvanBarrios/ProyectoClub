@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ProyectoClub.Models.Inscripcion>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Usuario> UserManager
+
+@{
+    ViewData["Title"] = "Inscripciones a Actividades";
+    var user = await UserManager.GetUserAsync(User);
+    var isAdmin= user != null && await UserManager.IsInRoleAsync(user, "Admin");
+}
+
+<h1>Inscripciones a Actividades</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Actividad</th>
+            <th>Sede</th>
+            <th>Fecha de inscripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inscripcion in Model)
+        {
+            <tr>
+                <td>@inscripcion.Usuario?.Email</td>
+                <td>@inscripcion.Actividad?.Nombre</td>
+                <td>@inscripcion.Sede?.Nombre</td>
+                <td>@inscripcion.FechaInscripcion.ToString("g")</td>
+                <td>
+                    @if (!isAdmin)
+                    {
+                     <a asp-action="EditActividad" asp-route-id="@inscripcion.Id" class="btn btn-sm btn-warning">Editar</a>
+                     <a asp-action="Delete" asp-route-id="@inscripcion.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                    }
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (!isAdmin)
+{
+    <a asp-action="CrearActividad" class="btn btn-primary">Inscribirse a una Actividad</a>
+}
+<a asp-action="Index" class="btn btn-secondary mt-3">Volver al Inicio</a>

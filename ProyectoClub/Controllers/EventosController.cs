@@ -36,6 +36,30 @@ namespace ProyectoClub.Controllers
         {
             evento.UsuarioId = _userManager.GetUserId(User);
 
+            var superpuesto = await _context.Eventos.AnyAsync(e =>
+                e.SedeId == evento.SedeId &&
+               (
+                   (evento.FechaInicio >= e.FechaInicio && evento.FechaInicio < e.FechaFin) ||
+                   (evento.FechaFin > e.FechaInicio && evento.FechaFin <= e.FechaFin) ||
+                   (evento.FechaInicio <= e.FechaInicio && evento.FechaFin >= e.FechaFin)
+                )
+            );
+
+            if (superpuesto)
+            {
+                ModelState.AddModelError("FechaInicio", "Ya existe un evento en la sede seleccionada durante ese horario.");
+            }
+
+            if (evento.FechaInicio >= evento.FechaFin)
+            {
+                ModelState.AddModelError("FechaInicio", "La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+
+            if (evento.FechaInicio < DateTime.Now)
+            {
+                ModelState.AddModelError("FechaInicio", "No se puede crear un evento con fecha de inicio en el pasado.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(evento);
@@ -65,11 +89,35 @@ namespace ProyectoClub.Controllers
         {
             if (id != evento.Id) return NotFound();
 
+            var superpuesto = await _context.Eventos.AnyAsync(e =>
+                e.Id != evento.Id &&
+                e.SedeId == evento.SedeId &&
+               (
+                   (evento.FechaInicio >= e.FechaInicio && evento.FechaInicio < e.FechaFin) ||
+                   (evento.FechaFin > e.FechaInicio && evento.FechaFin <= e.FechaFin) ||
+                   (evento.FechaInicio <= e.FechaInicio && evento.FechaFin >= e.FechaFin)
+                )
+            );
+
+            if (superpuesto)
+            {
+                ModelState.AddModelError("FechaInicio", "Ya existe un evento en la sede seleccionada durante ese horario.");
+            }
+
+            if (evento.FechaInicio >= evento.FechaFin)
+            {
+                ModelState.AddModelError("FechaInicio", "La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+
+            if (evento.FechaInicio < DateTime.Now)
+            {
+                ModelState.AddModelError("FechaInicio", "No se puede crear un evento con fecha de inicio en el pasado.");
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Aseguramos que no se modifique el UsuarioId
                     var eventoExistente = await _context.Eventos.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
                     if (eventoExistente == null) return NotFound();
 

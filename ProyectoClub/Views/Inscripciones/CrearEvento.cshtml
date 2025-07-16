@@ -20,13 +20,17 @@
 <form asp-action="CrearEvento" method="post">
     <div class="form-group">
         <label asp-for="SedeId" class="control-label"></label>
-        <select asp-for="SedeId" class="form-control" asp-items="ViewBag.SedeId"></select>
+        <select asp-for="SedeId" class="form-control" asp-items="ViewBag.SedeId" id="SedeId"">
+            <option value="" disabled selected>Seleccione una sede primero</option>
+        </select>
         <span asp-validation-for="SedeId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="EventoId" class="control-label"></label>
-        <select asp-for="EventoId" class="form-control" asp-items="ViewBag.EventoId"></select>
+        <select asp-for="EventoId" class="form-control" asp-items="ViewBag.EventoId" id="EventoId">
+            <option value="" disabled selected></option>
+        </select>
         <span asp-validation-for="EventoId" class="text-danger"></span>
     </div>
 
@@ -35,6 +39,41 @@
 </form>
 
 @section Scripts {
+    <script>
+        document.getElementById("SedeId").addEventListener("change", function () {
+            var sedeId = this.value;
+            var eventoSelect = document.getElementById("EventoId");
+
+            eventoSelect.innerHTML = '<option value="" disabled selected>Cargando eventos...</option>';
+
+            if (!sedeId) {
+                eventoSelect.innerHTML = '<option value="" disabled selected>Seleccione una sede primero</option>';
+                return;
+            }
+
+            fetch(`/Inscripciones/ObtenerEventosPorSede?sedeId=${sedeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    eventoSelect.innerHTML = ""; 
+
+                    if (data.length === 0) {
+                        eventoSelect.innerHTML = '<option value="" disabled>No hay eventos en esta sede</option>';
+                        return;
+                    }
+
+                    data.forEach(e => {
+                        var option = document.createElement("option");
+                        option.value = e.id;
+                        option.text = e.nombre;
+                        eventoSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error al cargar eventos:", error);
+                    eventoSelect.innerHTML = '<option value="" disabled>Error al cargar eventos</option>';
+                });
+        });
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

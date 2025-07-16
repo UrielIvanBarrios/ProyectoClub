@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -29,3 +29,58 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+
+a{
+    color: black !important;
+    text-decoration: none !important;
+}
+
+.btn{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+#cerrar-sesion{
+    margin: 0 !important;
+}
+
+input {
+    margin-bottom: 1.5rem;
+}
+
+body.Home-Index {
+    background: url('/images/main3.png') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+ body.Home-Index::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); 
+      z-index: -1;
+
+ }
+
+body.Home-Index .text-center {
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8); 
+}
+
+body.Home-Index footer {
+      background-color: transparent;
+      color: white !important;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+ }
+
+body.Home-Index footer a {
+      color: white !important;
+      text-decoration: none;
+}
+

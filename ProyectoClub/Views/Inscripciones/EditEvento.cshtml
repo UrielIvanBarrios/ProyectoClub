@@ -1,0 +1,35 @@
+﻿@model ProyectoClub.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Editar Inscripción a Evento";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="EditEvento" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="SedeId" class="control-label"></label>
+        <select asp-for="SedeId" class="form-control" asp-items="ViewBag.SedeId" disabled></select>
+        <input type="hidden" asp-for="SedeId" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventoId" class="control-label"></label>
+        <select asp-for="EventoId" class="form-control" asp-items="ViewBag.EventoId"></select>
+        <span asp-validation-for="EventoId" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="UsuarioId" />
+    <input type="hidden" asp-for="FechaInscripcion" />
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-action="IndexEvento" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

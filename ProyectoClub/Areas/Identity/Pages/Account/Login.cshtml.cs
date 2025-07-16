@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -22,11 +22,15 @@ namespace ProyectoClub.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<Usuario> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<Usuario> _userManager;
 
-        public LoginModel(SignInManager<Usuario> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<Usuario> signInManager,
+                  ILogger<LoginModel> logger,
+                  UserManager<Usuario> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -116,7 +120,12 @@ namespace ProyectoClub.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return LocalRedirect("/Admin/Dashboard");
+                    }
+                    return LocalRedirect(/*returnUrl*/"/Inscripciones/Index");
                 }
                 if (result.RequiresTwoFactor)
                 {
